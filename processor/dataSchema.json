@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "document",
+  "description": "An example document",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id","name", "age"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Document id",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name associated with the document"
+    },
+    "age": {
+      "type": "integer",
+      "description": "Age in years"
+    }
+  }
+}
