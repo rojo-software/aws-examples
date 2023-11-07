@@ -1,2 +1,3 @@
 **/*.zip
-processor/node_modules
+authorizer/node_modules/
+processor/node_modules/

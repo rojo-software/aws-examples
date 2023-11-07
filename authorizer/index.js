@@ -1,22 +1,33 @@
-export const handler = async(event) => {
+module.exports.handler = async(event) => {
 
-    let response = {
-        "isAuthorized": false
-    };
+    let isAuthorized = false;
 
-    // Key value store with username index
-    const credentialsDictionary = JSON.parse(process.env.CREDENTIALS);
-    const authHeader = event.headers?.authorization;
+    try {
+        // Key value store with username index
+        const credentialsDictionary = JSON.parse(process.env.CREDENTIALS);
+        const authHeader = event.headers?.authorization;
 
-    const b64Credentials = authHeader.match(/^Basic\s(.*)$/)[1];
-    const username = atob(b64Credentials).split(":")[0];
-    const password = atob(b64Credentials).split(":")[1];
+        const b64Credentials = authHeader.match(/^Basic\s(.*)$/)[1];
 
-    if (credentialsDictionary[username] && credentialsDictionary[username].password === password) {
-        response.isAuthorized = true;
+        const plainCredentials = (Buffer.from(b64Credentials, 'base64')).toString().split(':')
+
+        const username = plainCredentials[0];
+        const password = plainCredentials[1];
+
+        if (credentialsDictionary[username] && credentialsDictionary[username].password === password) {
+            console.log(`${username} is ${!isAuthorized ? '' : 'not '}authorized`);
+            isAuthorized = true;
+        }
+
+    }
+    catch(err) {
+        console.log(error);
+    }
+    finally {
+        return {
+            isAuthorized: isAuthorized
+        }
     }
 
-    console.log(response);
 
-    return response;
 };
