@@ -1,4 +1,21 @@
 const index = require('../index');
+const { DynamoDBDocumentClient, PutCommand, DeleteCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
+const {mockClient} = require('aws-sdk-client-mock');
+
+const ddbMock = mockClient(DynamoDBDocumentClient);
+
+beforeAll(() => {
+    ddbMock.on(PutCommand).resolves();
+    ddbMock.on(DeleteCommand).resolves();
+    ddbMock.on(GetCommand).resolves({
+        Item: {
+            id: 'ea9008de-7877-4116-bd04-5ff4ecbec096',
+            name: 'Allan',
+            age: 27
+        }
+    });
+})
+
 
 test('POST request', async() => {
     const event = {
@@ -44,7 +61,8 @@ test('POST request', async() => {
         "isBase64Encoded": false
     };
 
-    await index.handler(event);
+    const response = await index.handler(event);
+    expect(response.statusCode).toEqual(201);
 })
 
 test('DELETE event', async() => {
@@ -93,7 +111,8 @@ test('DELETE event', async() => {
         "isBase64Encoded": false
     }
 
-    await index.handler(event);
+    const response = await index.handler(event);
+    expect(response.statusCode).toEqual(200);
 
 })
 
@@ -143,6 +162,12 @@ test('GET event', async() => {
         "isBase64Encoded": false
     }
 
-    await index.handler(event);
+    const response = await index.handler(event);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toEqual( {
+        id: 'ea9008de-7877-4116-bd04-5ff4ecbec096',
+        name: 'Allan',
+        age: 27
+    });
 
 })
