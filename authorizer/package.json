@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "publish": "rm -rf node_modules; npm install --omit=dev; zip -r lambda.zip * -x test/**/*"
+    "publish": "rm -rf node_modules; npm install --omit=dev; zip -r lambda.zip * -x test"
   },
   "author": "",
   "license": "ISC"

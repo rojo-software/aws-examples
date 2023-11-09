@@ -91,7 +91,10 @@ module.exports.handler = async (event) => {
     }
 
     return {
-        body: responseBody,
-        statusCode: statusCode
+        body: JSON.stringify(responseBody),
+        statusCode: statusCode,
+        headers: {
+            "Content-Type": "application/json",
+        }
     };
 };

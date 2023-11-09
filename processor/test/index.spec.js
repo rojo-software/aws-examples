@@ -164,7 +164,7 @@ test('GET event', async() => {
 
     const response = await index.handler(event);
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual( {
+    expect(JSON.parse(response.body)).toEqual( {
         id: 'ea9008de-7877-4116-bd04-5ff4ecbec096',
         name: 'Allan',
         age: 27
