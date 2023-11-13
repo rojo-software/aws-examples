@@ -1,0 +1,149 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Description" : "Template for Lambda functions used behind API Gateway",
+  "Resources": {
+    "LambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "ExecutionRole",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs18.x",
+        "Code": {
+          "S3Bucket": {
+            "Ref": "DeploymentBucket"
+          },
+          "S3Key": {"Fn::Sub": "${FunctionType}.zip"}
+        }
+      }
+    },
+    "ExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "Lambda logging",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": "logs:CreateLogGroup",
+                  "Resource": {
+                    "Fn::Sub": "arn:aws:logs:eu-west-2:${AWS::AccountId}:*"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [{
+                    "Fn::Sub": "arn:aws:logs:eu-west-2:${AWS::AccountId}:log-group:/aws/lambda/*:*"
+                  }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "DynamoCRUDPolicy": {
+      "Condition": "IsProcessorLambda",
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "Dynamo CRUD operations",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "VisualEditor0",
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Scan",
+                "dynamodb:Query"
+              ],
+              "Resource": {"Fn::Sub": "arn:aws:dynamodb:*:${AWS::AccountId}:${DynamoTableName}/*/index/*"}
+            },
+            {
+              "Sid": "VisualEditor1",
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:Query"
+              ],
+              "Resource": {"Fn::Sub": "arn:aws:dynamodb:*:${AWS::AccountId}:${DynamoTableName}/*"}
+            }
+          ]
+        },
+        "Roles": [{"Ref":  "ExecutionRole"}]
+      }
+    },
+    "LambdaPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Principal": "apigateway.amazonaws.com",
+        "Action": "lambda.InvokeFunction",
+        "FunctionName": {
+          "Ref": "LambdaFunction"
+        },
+        "SourceArn": {
+          "Fn::Sub": "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiId}/${StageName}"
+        }
+      }
+    }
+  },
+  "Conditions": {
+    "IsProcessorLambda": {
+      "Fn::Equals": [{"Ref":  "FunctionType"}, "processor"]
+    }
+  },
+  "Parameters": {
+    "ApiId": {
+      "Type": "String",
+      "Description": "API ID"
+    },
+    "DeploymentBucket": {
+      "Type": "String",
+      "Description": "S3 bucket for deployment artifacts"
+    },
+    "DynamoTableName": {
+      "Type": "String",
+      "Description": "DynamoDB table name"
+    },
+    "FunctionType": {
+      "Type": "String",
+      "AllowedValues": ["authorizer", "processor"],
+      "Description": "Function type - authorizer or processor"
+    },
+    "StageName": {
+      "Type": "String",
+      "Description": "Stage name"
+    }
+  }
+}
