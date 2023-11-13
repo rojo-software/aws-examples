@@ -5,13 +5,21 @@
     "ProcessorLambdaStack": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Fn::Join": ["", ["${DeploymentBucket}", "templates/lambda.template.json"]],
-        "Parameters": {
-          "ApiId": "${ApiId}",
-          "DeploymentBucket": "${DeploymentBucket}",
-          "DynamoTableName": "${DynamoTableName}",
-          "FunctionType": "processor",
-          "StageName": "${DeploymentName}"
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "${DeploymentBucket}",
+              "templates/lambda.template.json"
+            ]
+          ],
+          "Parameters": {
+            "ApiId": "${ApiId}",
+            "DeploymentBucket": "${DeploymentBucket}",
+            "DynamoTableName": "${DynamoTableName}",
+            "FunctionType": "processor",
+            "StageName": "${DeploymentName}"
+          }
         }
       }
     }
