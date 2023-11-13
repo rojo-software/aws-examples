@@ -5,13 +5,13 @@
     "ProcessorLambdaStack": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "",
+        "TemplateURL": {"Fn::Join": ["", ["${DeploymentBucket}", "templates/lambda.template.json"]],
         "Parameters": {
           "ApiId": "${ApiId}",
-          "DeploymentBucket": {"Fn::Sub": "${DeploymentBucket}"},
+          "DeploymentBucket": "${DeploymentBucket}",
           "DynamoTableName": "${DynamoTableName}",
           "FunctionType": "processor",
-          "StageName": {"Fn::Sub":  "${DeploymentName"}
+          "StageName": "${DeploymentName}"
         }
       }
     }
@@ -27,7 +27,7 @@
     },
     "DeploymentBucket": {
       "Type": "String",
-      "Default": "something",
+      "Default": "s3://rojo-software-deployment/aws-example/",
       "Description": "S3 bucket for deployment artifacts"
     },
     "DeploymentName": {

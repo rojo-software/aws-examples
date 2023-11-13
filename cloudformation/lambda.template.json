@@ -17,7 +17,7 @@
           "S3Bucket": {
             "Ref": "DeploymentBucket"
           },
-          "S3Key": {"Fn::Sub": "${FunctionType}.zip"}
+          "S3Key": {"Fn::Sub": "lambda/${FunctionType}.zip"}
         }
       }
     },
