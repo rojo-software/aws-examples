@@ -108,7 +108,7 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Principal": "apigateway.amazonaws.com",
-        "Action": "lambda.InvokeFunction",
+        "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Ref": "LambdaFunction"
         },
