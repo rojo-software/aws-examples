@@ -21,7 +21,7 @@
         },
         "Environment": {
           "Variables": {
-            "TABLE_NAME": "${DynamoTableName}"
+            "TABLE_NAME": {"Ref" : "DynamoTableName"}
           }
         }
       }
