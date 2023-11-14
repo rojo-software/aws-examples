@@ -74,7 +74,7 @@
       "Condition": "IsProcessorLambda",
       "Type": "AWS::IAM::Policy",
       "Properties": {
-        "PolicyName": "Dynamo CRUD operations",
+        "PolicyName": "DynamoCRUDOps",
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
