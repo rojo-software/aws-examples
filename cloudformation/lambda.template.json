@@ -84,16 +84,14 @@
           "Version": "2012-10-17",
           "Statement": [
             {
-              "Sid": "VisualEditor0",
               "Effect": "Allow",
               "Action": [
                 "dynamodb:Scan",
                 "dynamodb:Query"
               ],
-              "Resource": {"Fn::Sub": "arn:aws:dynamodb:*:${AWS::AccountId}:${DynamoTableName}/*/index/*"}
+              "Resource": {"Fn::Sub": "arn:aws:dynamodb:*:${AWS::AccountId}:table/${DynamoTableName}/index/*"}
             },
             {
-              "Sid": "VisualEditor1",
               "Effect": "Allow",
               "Action": [
                 "dynamodb:PutItem",
@@ -102,7 +100,7 @@
                 "dynamodb:Scan",
                 "dynamodb:Query"
               ],
-              "Resource": {"Fn::Sub": "arn:aws:dynamodb:*:${AWS::AccountId}:${DynamoTableName}/*"}
+              "Resource": {"Fn::Sub": "arn:aws:dynamodb:*:${AWS::AccountId}:table/${DynamoTableName}"}
             }
           ]
         },
