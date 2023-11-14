@@ -17,7 +17,7 @@
           "S3Bucket": {
             "Ref": "DeploymentBucket"
           },
-          "S3Key": {"Fn::Sub": "lambda/${FunctionType}.zip"}
+          "S3Key": {"Fn::Sub": "${AppName}/lambda/${FunctionType}.zip"}
         }
       }
     },
@@ -127,6 +127,10 @@
     "ApiId": {
       "Type": "String",
       "Description": "API ID"
+    },
+    "AppName": {
+      "Type": "String",
+      "Description": "Application name"
     },
     "DeploymentBucket": {
       "Type": "String",

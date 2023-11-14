@@ -7,14 +7,16 @@
       "Properties": {
         "TemplateURL": {
           "Fn::Join": [
-            "",
+            "/",
             [
+              "https://s3.amazonaws.com/",
               "${DeploymentBucket}",
               "templates/lambda.template.json"
             ]
           ],
           "Parameters": {
             "ApiId": "${ApiId}",
+            "AppName": "${AppName}",
             "DeploymentBucket": "${DeploymentBucket}",
             "DynamoTableName": "${DynamoTableName}",
             "FunctionType": "processor",
@@ -28,6 +30,10 @@
     "ApiId": {
       "Type": "String",
       "Default": "a3jp3ewyog"
+    },
+    "AppName": {
+      "Type": "String",
+      "Default": "aws-example"
     },
     "DynamoTableName": {
       "Type": "String",
