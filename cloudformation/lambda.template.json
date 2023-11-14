@@ -18,6 +18,11 @@
             "Ref": "DeploymentBucket"
           },
           "S3Key": {"Fn::Sub": "${AppName}/lambda/${FunctionType}.zip"}
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": "${DynamoTableName}"
+          }
         }
       }
     },
