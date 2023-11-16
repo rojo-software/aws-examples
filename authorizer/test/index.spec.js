@@ -1,4 +1,8 @@
 const index = require('../index');
+const { SSMClient, GetParameterCommand } = require("@aws-sdk/client-ssm");
+const {mockClient} = require('aws-sdk-client-mock');
+
+const ssmMock = mockClient(SSMClient);
 
 const GOOD_USER = 'andy';
 const GOOD_PASS = 'password123';
@@ -16,7 +20,13 @@ credentials[ANOTHER_GOOD_USER] = {
     password: ANOTHER_GOOD_PASS
 };
 
-process.env.CREDENTIALS = JSON.stringify(credentials);
+beforeAll(() => {
+    ssmMock.on(GetParameterCommand).resolves({
+        Parameter: {
+            Value: JSON.stringify(credentials)
+        }
+    });
+})
 
 test('allow', async() => {
 
