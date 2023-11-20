@@ -47,7 +47,6 @@
         },
         "Policies": [
           {
-            "PolicyName": "LambdaLogging",
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
@@ -180,7 +179,7 @@
     "LambdaARN": {
       "Description": "Lambda function ARN",
       "Value": {
-        "Fn::GetAttr": [
+        "Fn::GetAtt": [
           "LambdaFunction",
           "Arn"
         ]
