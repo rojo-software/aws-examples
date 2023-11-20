@@ -107,6 +107,26 @@
         "Roles": [{"Ref":  "ExecutionRole"}]
       }
     },
+    "SSMGetParameterPolicy": {
+      "Condition": "IsAuthorizerLambda",
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "SSMGetParameter",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameter"
+              ],
+              "Resource": {"Fn::Sub": "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/AUTH_CREDENTIALS"}
+            }
+          ]
+        },
+        "Roles": [{"Ref":  "ExecutionRole"}]
+      }
+    },
     "LambdaPermission": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
@@ -124,6 +144,9 @@
   "Conditions": {
     "IsProcessorLambda": {
       "Fn::Equals": [{"Ref":  "FunctionType"}, "processor"]
+    },
+    "IsAuthorizerLambda": {
+      "Fn::Equals": [{"Ref":  "FunctionType"}, "authorizer"]
     }
   },
   "Parameters": {

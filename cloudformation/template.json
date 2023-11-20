@@ -27,6 +27,32 @@
           }
         }
       }
+    },
+    "AuthorizerLambdaStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Sub": "https://${DeploymentBucket}.s3.${AWS::Region}.amazonaws.com/aws-example/templates/lambda.template.json"
+        },
+        "Parameters": {
+          "ApiId": {
+            "Ref": "ApiId"
+          },
+          "AppName": {
+            "Ref": "AppName"
+          },
+          "DeploymentBucket": {
+            "Ref": "DeploymentBucket"
+          },
+          "DynamoTableName": {
+            "Ref": "DynamoTableName"
+          },
+          "FunctionType": "authorizer",
+          "StageName": {
+            "Ref": "DeploymentName"
+          }
+        }
+      }
     }
   },
   "Parameters": {
