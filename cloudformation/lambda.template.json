@@ -175,5 +175,16 @@
       "Type": "String",
       "Description": "Stage name"
     }
+  },
+  "Outputs": {
+    "LambdaARN": {
+      "Description": "Lambda function ARN",
+      "Value": {
+        "Fn::GetAttr": [
+          "LambdaFunction",
+          "Arn"
+        ]
+      }
+    }
   }
 }
