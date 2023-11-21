@@ -127,7 +127,22 @@
         "Roles": [{"Ref":  "ExecutionRole"}]
       }
     },
-    "LambdaPermission": {
+    "AuthorizerLambdaPermission": {
+      "Condition": "IsAuthorizerLambda",
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Principal": "apigateway.amazonaws.com",
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "LambdaFunction"
+        },
+        "SourceArn": {
+          "Fn::Sub": "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiId}/authorizers/*"
+        }
+      }
+    },
+    "ProcessorLambdaPermission": {
+      "Condition": "IsProcessorLambda",
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Principal": "apigateway.amazonaws.com",
@@ -177,14 +192,9 @@
     }
   },
   "Outputs": {
-    "LambdaARN": {
-      "Description": "Lambda function ARN",
-      "Value": {
-        "Fn::GetAtt": [
-          "LambdaFunction",
-          "Arn"
-        ]
-      }
+    "LambdaName": {
+      "Description": "Lambda function name",
+      "Value": {"Ref": "LambdaFunction"}
     }
   }
 }

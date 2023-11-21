@@ -53,6 +53,28 @@
           }
         }
       }
+    },
+    "Api": {
+      "Type": "AWS::ApiGatewayV2::Api",
+      "Properties": {
+        "Name": "aws-example",
+        "Description": "Example of API Gateway deployment",
+        "ProtocolType": "HTTP"
+      }
+    },
+    "Authorizer": {
+      "Type": "AWS::ApiGatewayV2::Authorizer",
+      "Properties": {
+        "ApiId": {"Ref":  "Api"},
+        "AuthorizerType": "REQUEST",
+        "AuthorizerUri": {
+          "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${AuthorizerLambdaStack.LambdaName}/invocations"
+        },
+        "AuthorizerPayloadFormatVersion": "2.0",
+        "EnableSimpleResponses": "true",
+        "Name": "Lambda Basic auth",
+        "IdentitySource": ["$request.header.authorization"]
+      }
     }
   },
   "Parameters": {
