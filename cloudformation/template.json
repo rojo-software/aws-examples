@@ -10,7 +10,7 @@
         },
         "Parameters": {
           "ApiId": {
-            "Ref": "ApiId"
+            "Ref": "Api"
           },
           "AppName": {
             "Ref": "AppName"
@@ -36,7 +36,7 @@
         },
         "Parameters": {
           "ApiId": {
-            "Ref": "ApiId"
+            "Ref": "Api"
           },
           "AppName": {
             "Ref": "AppName"
@@ -89,13 +89,43 @@
           "$request.header.authorization"
         ]
       }
+    },
+    "Integration": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {"Ref":  "Api"},
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "ProcessorLambdaStack",
+            "Outputs.LambdaArn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0"
+      }
+    },
+    "DocumentRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {"Ref": "Api"},
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {"Ref": "Authorizer"},
+        "RouteKey": "GET /document",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "Integration"
+              }
+            ]
+          ]
+        }
+      }
     }
   },
   "Parameters": {
-    "ApiId": {
-      "Type": "String",
-      "Default": "a3jp3ewyog"
-    },
     "AppName": {
       "Type": "String",
       "Default": "aws-example"

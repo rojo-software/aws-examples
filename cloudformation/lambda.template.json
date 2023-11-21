@@ -195,6 +195,10 @@
     "LambdaName": {
       "Description": "Lambda function name",
       "Value": {"Ref": "LambdaFunction"}
+    },
+    "LambdaArn": {
+      "Description": "Lambda function ARN",
+      "Value": {"Fn::GetAtt": ["LambdaFunction", "Arn"]}
     }
   }
 }
