@@ -65,15 +65,29 @@
     "Authorizer": {
       "Type": "AWS::ApiGatewayV2::Authorizer",
       "Properties": {
-        "ApiId": {"Ref":  "Api"},
+        "ApiId": {
+          "Ref": "Api"
+        },
         "AuthorizerType": "REQUEST",
         "AuthorizerUri": {
-          "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${AuthorizerLambdaStack.LambdaName}/invocations"
+          "Fn::Sub": [
+            "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaName}/invocations",
+            {
+              "LambdaName": {
+                "Fn::GetAtt": [
+                  "AuthorizerLambdaStack",
+                  "Outputs.LambdaName"
+                ]
+              }
+            }
+          ]
         },
         "AuthorizerPayloadFormatVersion": "2.0",
         "EnableSimpleResponses": "true",
-        "Name": "Lambda Basic auth",
-        "IdentitySource": ["$request.header.authorization"]
+        "Name": "LambdaBasicAuth",
+        "IdentitySource": [
+          "$request.header.authorization"
+        ]
       }
     }
   },
