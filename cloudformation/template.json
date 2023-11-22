@@ -107,7 +107,7 @@
         "PayloadFormatVersion": "2.0"
       }
     },
-    "DocumentRoute": {
+    "DocumentSearchRoute": {
       "Type": "AWS::ApiGatewayV2::Route",
       "Properties": {
         "ApiId": {
@@ -118,6 +118,54 @@
           "Ref": "Authorizer"
         },
         "RouteKey": "GET /document",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "Integration"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "DocumentUpsertRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "Api"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "Authorizer"
+        },
+        "RouteKey": "POST /document",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "Integration"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "DocumentDeleteRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "Api"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "Authorizer"
+        },
+        "RouteKey": "DELETE /document/{id}",
         "Target": {
           "Fn::Join": [
             "/",
