@@ -107,7 +107,7 @@
         "PayloadFormatVersion": "2.0"
       }
     },
-    "DocumentSearchRoute": {
+    "DocumentRoute": {
       "Type": "AWS::ApiGatewayV2::Route",
       "Properties": {
         "ApiId": {
