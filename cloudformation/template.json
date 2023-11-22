@@ -96,6 +96,7 @@
         "ApiId": {
           "Ref": "Api"
         },
+        "IntegrationMethod": "POST",
         "IntegrationType": "AWS_PROXY",
         "IntegrationUri": {
           "Fn::GetAtt": [
