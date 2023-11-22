@@ -2,3 +2,4 @@
 authorizer/node_modules/
 processor/node_modules/
 .idea/
+lambda/

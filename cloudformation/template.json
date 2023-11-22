@@ -93,7 +93,9 @@
     "Integration": {
       "Type": "AWS::ApiGatewayV2::Integration",
       "Properties": {
-        "ApiId": {"Ref":  "Api"},
+        "ApiId": {
+          "Ref": "Api"
+        },
         "IntegrationType": "AWS_PROXY",
         "IntegrationUri": {
           "Fn::GetAtt": [
@@ -107,9 +109,13 @@
     "DocumentRoute": {
       "Type": "AWS::ApiGatewayV2::Route",
       "Properties": {
-        "ApiId": {"Ref": "Api"},
+        "ApiId": {
+          "Ref": "Api"
+        },
         "AuthorizationType": "CUSTOM",
-        "AuthorizerId": {"Ref": "Authorizer"},
+        "AuthorizerId": {
+          "Ref": "Authorizer"
+        },
         "RouteKey": "GET /document",
         "Target": {
           "Fn::Join": [
@@ -121,6 +127,18 @@
               }
             ]
           ]
+        }
+      }
+    },
+    "Stage": {
+      "Type": "AWS::ApiGatewayV2::Stage",
+      "Properties": {
+        "ApiId": {
+          "Ref": "Api"
+        },
+        "AutoDeploy": "true",
+        "StageName": {
+          "Ref": "DeploymentName"
         }
       }
     }

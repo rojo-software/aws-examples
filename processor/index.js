@@ -14,14 +14,14 @@ async function handlePostRequest(eventBody) {
             throw new Error('Payload not valid');
         }
 
-        console.log('Putting ' + jsonPayload.id);
+        console.log('Post ' + jsonPayload.id);
         await docClient.send(
             new PutCommand({
                 TableName: tableName,
                 Item: jsonPayload,
             })
         );
-        console.log(`Put item ${jsonPayload.id}`);
+        console.log(`Completed post item ${jsonPayload.id}`);
         return true;
     }
     catch(err) {
@@ -94,7 +94,7 @@ module.exports.handler = async (event) => {
         body: JSON.stringify(responseBody),
         statusCode: statusCode,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         }
     };
 };
