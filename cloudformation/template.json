@@ -19,7 +19,7 @@
             "Ref": "DeploymentBucket"
           },
           "DynamoTableName": {
-            "Ref": "DynamoTableName"
+            "Ref": "DDBTable"
           },
           "FunctionType": "processor",
           "StageName": {
@@ -45,7 +45,7 @@
             "Ref": "DeploymentBucket"
           },
           "DynamoTableName": {
-            "Ref": "DynamoTableName"
+            "Ref": "DDBTable"
           },
           "FunctionType": "authorizer",
           "StageName": {
@@ -190,16 +190,39 @@
           "Ref": "DeploymentName"
         }
       }
+    },
+    "DDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": {
+          "Ref": "AppName"
+        },
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "1",
+          "WriteCapacityUnits": "1"
+        },
+        "StreamSpecification": {
+          "StreamViewType": "NEW_IMAGE"
+        }
+      }
     }
   },
   "Parameters": {
     "AppName": {
       "Type": "String",
       "Default": "aws-example"
-    },
-    "DynamoTableName": {
-      "Type": "String",
-      "Default": "example"
     },
     "DeploymentBucket": {
       "Type": "String",
