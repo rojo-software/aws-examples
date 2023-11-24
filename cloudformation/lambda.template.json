@@ -89,7 +89,7 @@
                 "dynamodb:Scan",
                 "dynamodb:Query"
               ],
-              "Resource": {"Fn::Sub": "arn:aws:dynamodb:*:${AWS::AccountId}:table/${DynamoTableName}/index/*"}
+              "Resource": {"Fn::Sub": "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${DynamoTableName}/index/*"}
             },
             {
               "Effect": "Allow",
@@ -100,7 +100,7 @@
                 "dynamodb:Scan",
                 "dynamodb:Query"
               ],
-              "Resource": {"Fn::Sub": "arn:aws:dynamodb:*:${AWS::AccountId}:table/${DynamoTableName}"}
+              "Resource": {"Fn::Sub": "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${DynamoTableName}"}
             }
           ]
         },

@@ -1,0 +1,14 @@
+{
+  "name": "dynamostream",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm *.zip; npm install --omit=dev; zip -r dynamoStream.zip * -x test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-sns": "^3.454.0"
+  }
+}
